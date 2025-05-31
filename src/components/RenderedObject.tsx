@@ -14,7 +14,7 @@ function RenderedObject({ item }: { item: any | any[] }) {
   }
 
   if (Array.isArray(item)) {
-    return <ul className="m-1 p-1 rounded-sm border-l" style={{backgroundColor: "rgba(255, 255, 255, 0.05)"}}>
+    return <ul className="m-1 p-1 rounded-sm border-l-3" style={{backgroundColor: "rgba(255, 255, 255, 0.05)", borderColor: "#FFEE88"}}>
           {item.map((i) => {
                 return <li key={i.toString()}><RenderedObject item={i} /></li>
             })}
@@ -24,7 +24,7 @@ function RenderedObject({ item }: { item: any | any[] }) {
   if (valueType === 'object' && item !== null) {
     return (
       <>
-          <div className="flex flex-col m-1 p-1 rounded-sm border-2 border-black/50 border-dotted"  style={{backgroundColor: "rgba(255, 255, 255, 0.05)"}}>
+          <div className="flex flex-col m-1 p-1 rounded-sm border-1 border-dashed"  style={{backgroundColor: "rgba(255, 255, 255, 0.05)", borderColor: "#0ACDFF"}}>
             {Object.entries(item).map(([key, value]) => {
               if (key === ""){
                 key = '""'
