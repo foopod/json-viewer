@@ -48,7 +48,7 @@ function App() {
     <>
       <div className='max-w-5xl mx-auto'>
         <div className='flex justify-between items-center'>
-          <h1 className='my-5'><a href='/'>JSON Viewer</a></h1>
+          <h1 className='my-5'><a href='/'>JSONless</a></h1>
           <button onClick={() => { setDialogOpen(true) }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
             Import
           </button>
