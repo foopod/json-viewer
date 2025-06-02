@@ -37,7 +37,7 @@ function RenderedObject({ item, layersLeft, path, delve }: { item: any | any[], 
   }
 
   if (Array.isArray(item)) {
-    return <ul className="m-1 p-1 rounded-sm border-l-3 border-blue-500" style={{ backgroundColor: "rgba(255, 255, 255, 0.05)" }}>
+    return <ul className="m-1 p-1 rounded-sm border-l-3 border-amber-200" style={{ backgroundColor: "rgba(255, 255, 255, 0.05)" }}>
       {item.map((i, index) => {
         return <li key={index}><RenderedObject item={i} layersLeft={layersLeft - 1} path={[...path, index.toString()]} delve={delve} /></li>
       })}
