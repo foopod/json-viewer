@@ -26,8 +26,8 @@ function ImportDialog({ isOpen, onUpload, onClose }: { isOpen: boolean, onUpload
         return true
     }
 
-    return <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div className="bg-stone-600 p-5 rounded-sm w-xl">
+    return <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50">
+        <div className="bg-stone-800 p-5 rounded-sm w-xl">
             <h2 className="text-xl font-semibold mb-4">Paste JSON</h2>
             <textarea id="message" rows={4}
                 className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
