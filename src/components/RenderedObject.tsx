@@ -37,7 +37,7 @@ function RenderedObject({ item, layersLeft, path, delve }: { item: any | any[], 
   }
 
   if (Array.isArray(item)) {
-    return <ul className="m-1 p-1 rounded-sm border-l-3" style={{ backgroundColor: "rgba(255, 255, 255, 0.05)", borderColor: "#FFEE88" }}>
+    return <ul className="m-1 p-1 rounded-sm border-l-3 border-blue-500" style={{ backgroundColor: "rgba(255, 255, 255, 0.05)" }}>
       {item.map((i, index) => {
         return <li key={index}><RenderedObject item={i} layersLeft={layersLeft - 1} path={[...path, index.toString()]} delve={delve} /></li>
       })}
@@ -47,7 +47,7 @@ function RenderedObject({ item, layersLeft, path, delve }: { item: any | any[], 
   if (valueType === 'object' && item !== null) {
     return (
       <>
-        <div className="flex m-1 rounded-sm border-1 border-dashed w-full" style={{ backgroundColor: "rgba(255, 255, 255, 0.05)", borderColor: "#0ACDFF" }}>
+        <div className="flex m-1 rounded-sm border-1 border-dashed w-full border-blue-500" style={{ backgroundColor: "rgba(255, 255, 255, 0.05)"}}>
           <div className="h-full w-2 bg-blue-900 transition-all duration-300 hover:w-4 cursor-pointer" onClick={() => { delve(path, false) }}></div>
           <div className="flex flex-col p-1">
             {Object.entries(item).map(([key, value]) => {
