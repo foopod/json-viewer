@@ -99,7 +99,7 @@ function App() {
     <>
       <div className='max-w-5xl mx-auto'>
         <div className='flex justify-between items-center'>
-          <a href='/'><h1 className='my-5 text-blue-600 transition-colors duration-300 cursor-pointer hover:text-blue-500'>JSONless</h1></a>
+          <h1 className='my-5'><a className='text-blue-600 transition-colors duration-300 cursor-pointer hover:text-blue-500' href='/'>JSONless</a></h1>
           <div className='flex gap-1'>
             <div className='py-2 px-4'>Context</div>
             <button onClick={() => { setVisibleLayers(p => p + 1) }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
