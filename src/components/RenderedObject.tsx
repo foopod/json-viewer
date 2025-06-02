@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaArrowRightToBracket, FaPlus } from "react-icons/fa6";
+import { FaArrowRightToBracket} from "react-icons/fa6";
 
 function RenderedObject({ item, layersLeft, path, delve }: { item: any | any[], layersLeft: number, path: string[], delve: (path: string[], step: boolean) => void }) {
   const [isExpanded, setIsExpanded] = useState(layersLeft > 0)
