@@ -3,13 +3,9 @@ import './App.css'
 import RenderedObject from './components/RenderedObject'
 import ImportDialog from './components/ImportDialog'
 import { config, swagger, weatherData } from './data/examples'
-import { FaArrowTurnUp, FaArrowUp, FaChevronLeft, FaChevronRight, FaTurnUp } from 'react-icons/fa6'
-import { FaHome } from 'react-icons/fa'
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
 import { searchJsonPathsSimple, type JsonObject, type JsonValue } from './utilities/utilities'
-import { BsSkipStartFill } from 'react-icons/bs'
-import { TiArrowBack } from 'react-icons/ti'
 import { BiArrowBack, BiSolidToTop } from 'react-icons/bi'
-import { IoMdArrowRoundBack } from 'react-icons/io'
 
 function App() {
   const [data, setData] = useState({})
@@ -117,7 +113,7 @@ function App() {
   }
 
   const jumpToPath = (index: number) => {
-    const newPath = currentPath.slice(0, index)
+    const newPath = currentPath.slice(0, index + 1)
     setCurrentPath(newPath)
   }
 
@@ -167,9 +163,9 @@ function App() {
                     {
                       currentPath.map((item, index) => {
                         return (
-                          <span key={`${item}-${index}`}>
-                            <span className='mx-1'>/</span><span onClick={() => { jumpToPath(index) }} className='hover:text-blue-400 hover:underline transition-colors duration-300 cursor-pointer'>{item}</span>
-                          </span >
+                          <>
+                            <span className='mx-1'>/</span><span onClick={() => { jumpToPath(index) }} className='px-2 py-1 bg-stone-700/50 rounded-sm hover:text-blue-400 hover:underline transition-colors duration-300 cursor-pointer'>{item}</span>
+                          </>
                         )
                       })
                     }
