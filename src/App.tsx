@@ -131,7 +131,7 @@ function App() {
         <div className='flex justify-between items-center mx-1'>
           <h1 className='my-5'><a className='text-white transition-colors duration-300 cursor-pointer hover:text-blue-500' href='/'>JSONless</a></h1>
           <div className='flex gap-1 text-sm'>
-            <button title='Decrease visible layers' onClick={() => { setVisibleLayers(p => Math.max(p - 1, 0)) }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
+            <button title='Decrease visible layers' onClick={() => { setVisibleLayers(p => Math.max(p - 1, 1)) }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
               -
             </button>
             <div title='Number of visible layers' className='py-2 px-4 bg-stone-900 rounded-sm'>{visibleLayers} layers</div>
