@@ -117,7 +117,7 @@ function App() {
   }
 
   const jumpToPath = (index: number) => {
-    const newPath = currentPath.slice(0, index + 1)
+    const newPath = currentPath.slice(0, index)
     setCurrentPath(newPath)
   }
 
