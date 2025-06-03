@@ -59,7 +59,7 @@ function App() {
       onSearch(search)
     } else {
       setSearchResults([])
-      setSearchResultIndex(0)
+      setSearchResultsIndex(0)
     }
   }, [search])
 
