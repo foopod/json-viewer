@@ -3,11 +3,9 @@ import './App.css'
 import RenderedObject from './components/RenderedObject'
 import ImportDialog from './components/ImportDialog'
 import { config, weatherData } from './data/examples'
-import { PiArrowULeftUpFill } from 'react-icons/pi'
-
-type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
-type JsonObject = { [key: string]: JsonValue };
-type JsonArray = JsonValue[];
+import { FaArrowTurnUp, FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
+import { FaHome } from 'react-icons/fa'
+import { searchJsonPathsSimple, type JsonObject, type JsonValue } from './utilities/utilities'
 
 function App() {
   const [data, setData] = useState({})
@@ -15,6 +13,10 @@ function App() {
   const [currentPath, setCurrentPath] = useState<string[]>([])
   const [isDialogOpen, setDialogOpen] = useState(false)
   const [visibleLayers, setVisibleLayers] = useState(4)
+
+  const [search, setSearch] = useState("")
+  const [searchResults, setSearchResults] = useState<string[][]>([])
+  const [searchResultIndex, setSearchResultsIndex] = useState(0)
 
   useEffect(() => {
     const exampleData = {
@@ -52,6 +54,20 @@ function App() {
     setVisibleData(getValueAtPath(data, currentPath))
   }, [currentPath])
 
+  useEffect(() => {
+    if (search.length > 1) {
+      onSearch(search)
+    } else {
+      setSearchResults([])
+    }
+  }, [search])
+
+  useEffect(() => {
+    if (searchResults.length > 0) {
+      setCurrentPath(searchResults[searchResultIndex])
+    }
+  }, [searchResults, searchResultIndex])
+
   const getValueAtPath = (obj: JsonValue, path: string[]): JsonValue => {
     let current = obj;
     for (const key of path) {
@@ -76,13 +92,13 @@ function App() {
   }
 
   const popPath = () => {
-    if (currentPath){
+    if (currentPath) {
       setCurrentPath(currentPath.slice(0, -1))
     }
   }
 
   const delveDeeper = (path: string[], step: boolean = true) => {
-    if(step){
+    if (step) {
       const next = path[0]
       setCurrentPath([...currentPath, next])
     } else {
@@ -91,16 +107,23 @@ function App() {
   }
 
   const jumpToPath = (index: number) => {
-    const newPath = currentPath.slice(0, index+1)
+    const newPath = currentPath.slice(0, index + 1)
     setCurrentPath(newPath)
+  }
+
+
+
+  const onSearch = (text: string) => {
+    const results = searchJsonPathsSimple(data, text, false)
+    setSearchResults(results)
   }
 
   return (
     <>
       <div className='max-w-5xl mx-auto'>
-        <div className='flex justify-between items-center'>
-          <h1 className='my-5'><a className='text-blue-600 transition-colors duration-300 cursor-pointer hover:text-blue-500' href='/'>JSONless</a></h1>
-          <div className='flex gap-1'>
+        <div className='flex justify-between items-center mx-1'>
+          <h1 className='my-5'><a className='text-white transition-colors duration-300 cursor-pointer hover:text-blue-500' href='/'>JSONless</a></h1>
+          <div className='flex gap-1 text-sm'>
             <div className='py-2 px-4'>Context</div>
             <button onClick={() => { setVisibleLayers(p => p + 1) }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
               +
@@ -119,36 +142,87 @@ function App() {
         </div>
         <ImportDialog isOpen={isDialogOpen} onUpload={onJSONLoad} onClose={() => { setDialogOpen(false) }} />
         <div className='text-xs'>
-          <div className='flex'>
-            {currentPath.length > 0 &&
-            <>
-              <button onClick={popPath} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
-                <PiArrowULeftUpFill size={"1.5em"} />
-              </button>
-              <div className='text-lg mx-4'>
-                {
-                  currentPath.map((item, index) => {
-                    return (
-                      <span key={`${item}-${index}`}>
-                        <span> / </span><span onClick={() => {jumpToPath(index)}} className='hover:text-blue-400 hover:underline transition-colors duration-300 cursor-pointer'>{item}</span>
-                      </span >
-                    )
-                  })
-                }
-              </div>
-              </>
-            }
+          <div className='flex justify-between m-1 my-2'>
+            <div className='flex'>
+              {currentPath.length > 0 &&
+                <>
+                  <div className='flex gap-1'>
+                    <button onClick={() => { jumpToPath(-1) }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
+                      <FaHome size={"1.5em"} />
+                    </button>
+                    <button onClick={popPath} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
+                      <FaArrowTurnUp size={"1.5em"} />
+                    </button>
+                  </div>
+                  <div className='flex items-center text-base mx-2'>
+                    {
+                      currentPath.map((item, index) => {
+                        return (
+                          <span key={`${item}-${index}`}>
+                            <span className='mx-1'>/</span><span onClick={() => { jumpToPath(index) }} className='hover:text-blue-400 hover:underline transition-colors duration-300 cursor-pointer'>{item}</span>
+                          </span >
+                        )
+                      })
+                    }
+                  </div>
+                </>
+              }
+            </div>
+            <div className="relative">
+              <input
+                type='text'
+                className='py-2 px-4 pr-10 bg-stone-700 rounded-sm w-full'
+                placeholder='Search'
+                value={search}
+                onChange={(e) => { setSearch(e.target.value) }}
+              />
+              {search && (
+                <button
+                  onClick={() => setSearch('')}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-stone-400 hover:text-stone-200 transition-colors"
+                  type="button"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
           </div>
-          <RenderedObject item={visibleData} layersLeft={visibleLayers} path={[]} delve={delveDeeper}/>
+          {searchResults.length === 0 ?
+            <div>
+              <RenderedObject item={visibleData} layersLeft={visibleLayers} path={[]} delve={delveDeeper} searchTerm={''} />
+            </div>
+            :
+            <div>
+              <div className='flex mx-1 gap-5 my-2'>
+                <h2 className='text-2xl'>Search Results</h2>
+                <div className='flex gap-1'>
+                  <button
+                    disabled={searchResultIndex === 0}
+                    onClick={() => { setSearchResultsIndex(prev => Math.max(prev - 1)) }}
+                    className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 disabled:bg-stone-900 disabled:opacity-50 disabled:cursor-default transition-colors duration-300 cursor-pointer'>
+                    <FaChevronLeft size={"1.5em"} />
+                  </button>
+                  <div className='py-2 px-4 bg-stone-900 rounded-sm'>{searchResultIndex + 1} / {searchResults.length}</div>
+                  <button
+                    disabled={searchResultIndex === (searchResults.length - 1)}
+                    onClick={() => { setSearchResultsIndex(prev => Math.min(prev + 1, searchResults.length - 1)) }}
+                    className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 disabled:bg-stone-900 disabled:opacity-50 disabled:cursor-default transition-colors duration-300 cursor-pointer'>
+                    <FaChevronRight size={"1.5em"} />
+                  </button>
+                </div>
+              </div>
+              <RenderedObject item={visibleData} layersLeft={visibleLayers} path={[]} delve={delveDeeper} searchTerm={search} />
+            </div>
+          }
         </div>
-        <div>
+        <div className='min-h-50'>
           <h2 className='text-xl my-2'>More Examples</h2>
           <div className='flex gap-2'>
             <button onClick={() => { loadExample('config') }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>Config</button>
             <button onClick={() => { loadExample('weather') }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>Weather</button>
           </div>
         </div>
-      </div>
+      </div >
     </>
   )
 }

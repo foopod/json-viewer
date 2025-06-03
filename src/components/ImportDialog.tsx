@@ -11,6 +11,7 @@ function ImportDialog({ isOpen, onUpload, onClose }: { isOpen: boolean, onUpload
     const loadJSON = () => {
         if (validateJSON(text)){
             onUpload(text)
+            setText('')
         }
     }
 
