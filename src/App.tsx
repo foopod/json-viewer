@@ -2,10 +2,14 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import RenderedObject from './components/RenderedObject'
 import ImportDialog from './components/ImportDialog'
-import { config, weatherData } from './data/examples'
-import { FaArrowTurnUp, FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
+import { config, swagger, weatherData } from './data/examples'
+import { FaArrowTurnUp, FaArrowUp, FaChevronLeft, FaChevronRight, FaTurnUp } from 'react-icons/fa6'
 import { FaHome } from 'react-icons/fa'
 import { searchJsonPathsSimple, type JsonObject, type JsonValue } from './utilities/utilities'
+import { BsSkipStartFill } from 'react-icons/bs'
+import { TiArrowBack } from 'react-icons/ti'
+import { BiArrowBack, BiSolidToTop } from 'react-icons/bi'
+import { IoMdArrowRoundBack } from 'react-icons/io'
 
 function App() {
   const [data, setData] = useState({})
@@ -87,8 +91,14 @@ function App() {
     setData(JSON.parse(text))
   }
 
-  const loadExample = (data: "config" | 'weather') => {
-    setData(JSON.parse(data === 'config' ? config : weatherData))
+  const loadExample = (data: "config" | 'weather' | 'swagger') => {
+    if(data === 'config'){
+      setData(JSON.parse(config))
+    } else if (data === 'weather'){
+      setData(JSON.parse(weatherData))
+    } else if (data === 'swagger'){
+      setData(JSON.parse(swagger))
+    }
   }
 
   const popPath = () => {
@@ -124,16 +134,15 @@ function App() {
         <div className='flex justify-between items-center mx-1'>
           <h1 className='my-5'><a className='text-white transition-colors duration-300 cursor-pointer hover:text-blue-500' href='/'>JSONless</a></h1>
           <div className='flex gap-1 text-sm'>
-            <div className='py-2 px-4'>Context</div>
-            <button onClick={() => { setVisibleLayers(p => p + 1) }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
-              +
-            </button>
-            <div className='py-2 px-4 bg-stone-900 rounded-sm'>{visibleLayers} layers</div>
-            <button onClick={() => { setVisibleLayers(p => Math.max(p - 1, 0)) }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
+            <button title='Decrease visible layers' onClick={() => { setVisibleLayers(p => Math.max(p - 1, 0)) }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
               -
             </button>
+            <div title='Number of visible layers' className='py-2 px-4 bg-stone-900 rounded-sm'>{visibleLayers} layers</div>
+            <button title='Increase visible layers' onClick={() => { setVisibleLayers(p => p + 1) }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
+              +
+            </button>
             <div className='w-4'></div>
-            <button onClick={() => { setDialogOpen(true) }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
+            <button title='Open json text' onClick={() => { setDialogOpen(true) }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
               Import
             </button>
           </div>
@@ -147,11 +156,11 @@ function App() {
               {currentPath.length > 0 &&
                 <>
                   <div className='flex gap-1'>
-                    <button onClick={() => { jumpToPath(-1) }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
-                      <FaHome size={"1.5em"} />
+                    <button title='Go to top' onClick={() => { jumpToPath(-1) }} className='py-1 px-2 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
+                      <BiSolidToTop size={"1.5em"} />
                     </button>
-                    <button onClick={popPath} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
-                      <FaArrowTurnUp size={"1.5em"} />
+                    <button title='Go up a level' onClick={popPath} className='py-1 px-2 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>
+                      <BiArrowBack size={"1.5em"} />
                     </button>
                   </div>
                   <div className='flex items-center text-base mx-2'>
@@ -175,12 +184,14 @@ function App() {
                 placeholder='Search'
                 value={search}
                 onChange={(e) => { setSearch(e.target.value) }}
+                title='Search within the JSON structure'
               />
               {search && (
                 <button
                   onClick={() => setSearch('')}
                   className="absolute right-2 top-1/2 transform -translate-y-1/2 text-stone-400 hover:text-stone-200 transition-colors"
                   type="button"
+                  title='Clear search'
                 >
                   ✕
                 </button>
@@ -218,8 +229,10 @@ function App() {
         <div className='min-h-50'>
           <h2 className='text-xl my-2'>More Examples</h2>
           <div className='flex gap-2'>
-            <button onClick={() => { loadExample('config') }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>Config</button>
+            <button onClick={() => { loadExample('swagger') }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>Swagger</button>
+            <button onClick={() => { loadExample('config') }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>Servlet Config</button>
             <button onClick={() => { loadExample('weather') }} className='py-2 px-4 bg-stone-900 rounded-sm hover:bg-blue-700 transition-colors duration-300 cursor-pointer'>Weather</button>
+          
           </div>
         </div>
       </div >
