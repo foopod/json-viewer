@@ -53,7 +53,7 @@ function RenderedObject({ item, layersLeft, path, delve, searchTerm }: { item: a
     return (
       <>
         <div className="flex m-1 rounded-sm border-1 border-dashed w-full border-blue-500 bg-white/5">
-          <div className="h-full w-2 bg-blue-900 transition-all duration-300 hover:w-4 cursor-pointer" onClick={() => { delve(path, false) }}></div>
+          <div className="w-2 bg-blue-900 transition-all duration-300 hover:w-4 cursor-pointer" onClick={() => { delve(path, false) }}></div>
           <div className="flex flex-col p-1">
             {Object.entries(item).map(([key, value]) => {
               if (key === "") {
